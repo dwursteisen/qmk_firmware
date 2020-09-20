@@ -15,6 +15,7 @@
  */
 
 #include QMK_KEYBOARD_H
+#include "rgblight.h"
 #include "keymap_french_osx.h"
 
 #define TAPPING_TERM 200
@@ -32,34 +33,40 @@ enum preonic_keycodes {
 // Tap Dance declarations
 enum {
     TD_MAJ_CAPS,
+    TD_A_A_GRAVE,
+    TD_E_E_AIGU,
+    TD_R_E_GRAVE
 };
 
 // Tap Dance definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
     // Tap once for Escape, twice for Caps Lock
     [TD_MAJ_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
+    [TD_A_A_GRAVE] = ACTION_TAP_DANCE_DOUBLE(FR_A, FR_LAGR),
+    [TD_E_E_AIGU] = ACTION_TAP_DANCE_DOUBLE(FR_E, FR_LEAC),
+    [TD_R_E_GRAVE] = ACTION_TAP_DANCE_DOUBLE(FR_R, FR_LEGR)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Azerty
  * ,-----------------------------------------------------------------------------------.
- * |   `  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Bksp |
+ * | ESC  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Del  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Tab  |   A  |   Z  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Del  |
+ * | Tab  |   A  |   Z  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |Grave |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Esc  |   Q  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
+ * | Esc  |   Q  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   M  |Enter |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Shift|   W  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
+ * | Shift|   W  |   X  |   C  |   V  |   B  |   N  |   ,  |   ;  |   .  |  Up  |RShift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Brite| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
+ * | Brite| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down | Down |Right |
  * `-----------------------------------------------------------------------------------'
  */
 [_AZERTY] = LAYOUT_preonic_grid( \
-  KC_ESC,            KC_KP_1,    KC_KP_2,    KC_KP_3,    KC_KP_4,    KC_KP_5,    KC_KP_6,    KC_KP_7,    KC_KP_8,    KC_KP_9,    KC_KP_0,    KC_BSPC, \
-  KC_TAB,            FR_A,    FR_Z,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_GRV, \
-  KC_CAPS,           FR_Q,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
-  TD(TD_MAJ_CAPS),   FR_W,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, FR_DOT,  KC_UP,   KC_RSFT, \
+  KC_ESC,            KC_KP_1,               KC_KP_2,    KC_KP_3,            KC_KP_4,             KC_KP_5,    KC_KP_6,    KC_KP_7,    KC_KP_8,    KC_KP_9,    KC_KP_0,    KC_BSPC, \
+  KC_TAB,            TD(TD_A_A_GRAVE),      FR_Z,       TD(TD_E_E_AIGU),    TD(TD_R_E_GRAVE),    KC_T,       KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,    KC_GRV, \
+  KC_CAPS,           FR_Q,                  KC_S,       KC_D,               KC_F,                KC_G,       KC_H,       KC_J,       KC_K,       KC_L,    KC_SCLN, KC_ENT, \
+  TD(TD_MAJ_CAPS),   FR_W,                  KC_X,       KC_C,               KC_V,                KC_B,       KC_N,       KC_M,       KC_COMM,    FR_DOT,  KC_UP,   KC_RSFT, \
   _______,           KC_LCTL, KC_LALT, KC_LGUI, _______,   KC_SPC,  KC_SPC,  MO(1),   KC_RALT, KC_LEFT, KC_DOWN, KC_RGHT  \
 ),
 
@@ -73,7 +80,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 };
+/*
+// Light LEDs 6 to 9 and 12 to 15 red when caps lock is active. Hard to ignore!
+const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 4, HSV_GREEN}       // Light 4 LEDs, starting with LED 0
+);
 
+// Now define the array of layers. Later layers take precedence
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    my_capslock_layer
+);
+
+void keyboard_post_init_user(void) {
+    // Enable the LED layers
+    rgblight_layers = my_rgb_layers;
+}
+
+bool led_update_user(led_t led_state) {
+    rgblight_set_layer_state(0, led_state.caps_lock);
+    return true;
+}
+*/
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
