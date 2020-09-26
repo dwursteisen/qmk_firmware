@@ -32,10 +32,10 @@ enum preonic_keycodes {
   LOWER,
   RAISE,
   FN,
-  MY_AGRAVE,
-  MY_CDILLE,
-  MY_EAIGU,
-  MY_EGRAVE
+  EJ_WAVE,
+  EJ_CRI,
+  EJ_THN,
+  EJ_FLI,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -65,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,     KC_F1,       KC_F2,     KC_F3,      KC_F4,      KC_F5,      KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,    _______, \
   _______,     _______,    KC_UP,    _______,    _______,    _______,    _______,  _______,  _______,  _______,  _______,   _______, \
   _______,     KC_LEFT,    KC_DOWN,    KC_RIGHT,    _______,    _______,    _______,  _______,  _______,  _______,  _______,   _______, \
-  _______,     _______,    _______,    _______,    _______,    _______,    _______,  _______,  KC_EQL, _______,  _______,   _______, \
+  _______,     _______,    _______,    _______,    _______,    _______,    _______,  _______,  KC_EQL, KC_COMM,  KC_DOT,   KC_SCLN, \
   _______,     _______,    _______,    _______,    _______,    _______,    _______,  _______, KC_BSLS,    KC_COMM,    KC_DOT,  KC_SCLN   \
 ),
 
@@ -79,10 +79,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_FN] = LAYOUT_preonic_grid( \
   _______,     _______,    _______,    _______,    _______,    _______,    _______,    _______,     KC_MUTE,    KC_VOLD,   KC_VOLU,   _______, \
+  _______,     _______,    _______,    _______,    _______,    _______,    _______,    EJ_WAVE,    EJ_CRI,    EJ_THN,    EJ_FLI,   _______, \
   _______,     _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,   _______, \
-  _______,     _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,   _______, \
-  _______,     _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,   _______, \
-  _______,     _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,   _______  \
+  _______,     _______,    _______,    _______,    _______,    _______,    _______,    _______,    KC_BSLS,    KC_COMM,    KC_DOT,   KC_SCLN, \
+  _______,     _______,    _______,    _______,    _______,    _______,    _______,    _______,    KC_BSLS,    KC_COMM,    KC_DOT,   KC_SCLN  \
 )
 
 
@@ -153,6 +153,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             layer_off(_FN);
              rgblight_disable();
           }
+          return false;
+          break;
+          case EJ_WAVE:
+            if (record->event.pressed) {
+                SEND_STRING(":wave:");
+            }
+          return false;
+          break;
+          case EJ_CRI:
+            if (record->event.pressed) {
+                SEND_STRING(":cri:");
+            }
+          return false;
+          break;
+          case EJ_THN:
+            if (record->event.pressed) {
+                SEND_STRING(":thinking_face:");
+            }
           return false;
           break;
       }
